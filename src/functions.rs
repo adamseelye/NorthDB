@@ -82,11 +82,11 @@ pub fn select_schema(schema_in: &str) -> Result<()> {
         schema_in.to_string()
     };
 
-    let adb_path = format!("./db/{}.ndb", get_schema);
+    let ndb_path = format!("./db/{}.ndb", get_schema);
 
     let mut schema_file = OpenOptions::new()
         .read(true)
-        .open(adb_path)?;
+        .open(ndb_path)?;
 
     let mut contents = String::new();
     schema_file.read_to_string(&mut contents)?;
