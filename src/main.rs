@@ -8,7 +8,7 @@ use crate::functions::{create_schema, alter_schema, select_schema};
 fn main() {
 
     let matches = App::new("NorthDB")
-        .version("0.2")
+        .version("0.2.1")
         .author("Adam Seelye")
         .about("NorthDB")
         .subcommand(
@@ -30,7 +30,7 @@ fn main() {
                 ),
         )
         .subcommand(
-            SubCommand::with_name("create")
+            SubCommand::with_name("create_schema")
                 .long_flag("create")
                 .short_flag('c')
                 .about("Create a new schema")
@@ -62,7 +62,7 @@ fn main() {
                 }
             }
         }
-    } else if let Some(matches) = matches.subcommand_matches("create") {
+    } else if let Some(matches) = matches.subcommand_matches("create_schema") {
         if let Some(schema_name) = matches.value_of("schema_name") {
             if let Err(e) = create_schema(schema_name) {
                 eprintln!("Error: {}", e);

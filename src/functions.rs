@@ -60,6 +60,7 @@ pub fn create_schema(schema_in: &str) -> Result<()> {
             ))?;
 
     let db_dir = parent_dir.join("db");
+
     println!("Attempting to create directory at: {:?}", db_dir);
     create_dir_all(db_dir)?;
     let db_path = format!("./db/{}.ndb", new_schema);
