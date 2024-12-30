@@ -1,5 +1,5 @@
 use std::io::{Write, Read, Result, Error, ErrorKind, stdin};
-use std::fs::{OpenOptions, create_dir_all};
+use std::fs::{OpenOptions, create_dir_all, remove_file};
 use std::env::current_exe;
 
 
@@ -31,6 +31,7 @@ pub fn alter_schema(schema_in: &str, data_in: &str) -> Result<()> {
         data_in.to_string()
     };
 
+    schema_data.push('\r');
     schema_data.push('\n');
     let db_path = format!("./db/{}.ndb", get_schema);
 
@@ -92,6 +93,22 @@ pub fn select_schema(schema_in: &str) -> Result<()> {
     let mut contents = String::new();
     schema_file.read_to_string(&mut contents).expect("Failed to read schema contents");
     println!("{}", contents);
+
+    Ok(())
+}
+
+pub fn delete_schema(schema_in: &str) -> Result<()> {
+    let get_schema = if schema_in.is_empty() {
+        get_user_input("Please enter schema name: ").expect("Failed to read schema")
+    } else {
+        schema_in.to_string()
+    };
+
+    let ndb_path = format!("./db/{}.ndb", get_schema);
+
+    remove_file(ndb_path).expect("Failed to delete file");
+
+    println!("{} deleted", get_schema);
 
     Ok(())
 }
