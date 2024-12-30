@@ -2,7 +2,7 @@ use clap::{App, Arg, SubCommand};
 
 mod functions;
 
-use crate::functions::{create_schema, alter_schema, select_schema};
+use crate::functions::{create_schema, alter_schema, select_schema, delete_schema};
 
 
 fn main() {
@@ -51,6 +51,17 @@ fn main() {
                         .required(true),
                 ),
         )
+        .subcommand(
+            SubCommand::with_name("delete_schema")
+                .long_flag("delete")
+                .short_flag('d')
+                .about("Delete a schema")
+                .arg(
+                    Arg::with_name("schema_name")
+                        .help("Name of schema to delete")
+                        .required(true),
+                ),
+        )
         .get_matches();
 
 
@@ -71,6 +82,12 @@ fn main() {
     } else if let Some(matches) = matches.subcommand_matches("select_schema") {
         if let Some(schema_name) = matches.value_of("schema_name") {
             if let Err(e) = select_schema(schema_name) {
+                eprintln!("Error: {}", e);
+            }
+        }
+    } else if let Some(matches) = matches.subcommand_matches("delete_schema") {
+        if let Some(schema_name) = matches.value_of("schema_name") {
+            if let Err(e) = delete_schema(schema_name) {
                 eprintln!("Error: {}", e);
             }
         }
